@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "CutPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "cut_padding_mm": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Cut Padding Mm",
+          "type": "number"
+        },
+        "minimum_cut_width_mm": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Minimum Cut Width Mm",
+          "type": "number"
+        }
+      },
+      "title": "CutPolicy",
+      "type": "object"
+    },
+    "CutShape": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "sticker_id": {
+          "title": "Sticker Id",
+          "type": "string"
+        },
+        "sticker_revision": {
+          "minimum": 1,
+          "title": "Sticker Revision",
+          "type": "integer"
+        },
+        "placement_id": {
+          "title": "Placement Id",
+          "type": "string"
+        },
+        "outer": {
+          "$ref": "#/$defs/Ring"
+        },
+        "holes": {
+          "items": {
+            "$ref": "#/$defs/Ring"
+          },
+          "title": "Holes",
+          "type": "array"
+        },
+        "cut_policy": {
+          "$ref": "#/$defs/CutPolicy"
+        }
+      },
+      "required": [
+        "id",
+        "sticker_id",
+        "sticker_revision",
+        "placement_id",
+        "outer",
+        "holes"
+      ],
+      "title": "CutShape",
+      "type": "object"
+    },
+    "GeometryProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "draft",
+            "render"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "project_id": {
+          "title": "Project Id",
+          "type": "string"
+        },
+        "project_revision": {
+          "minimum": 1,
+          "title": "Project Revision",
+          "type": "integer"
+        },
+        "render_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Render Id"
+        }
+      },
+      "required": [
+        "kind",
+        "project_id",
+        "project_revision",
+        "render_id"
+      ],
+      "title": "GeometryProvenance",
+      "type": "object"
+    },
+    "Ring": {
+      "additionalProperties": false,
+      "properties": {
+        "closed": {
+          "const": true,
+          "title": "Closed",
+          "type": "boolean"
+        },
+        "points": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "maxItems": 2000,
+          "minItems": 3,
+          "title": "Points",
+          "type": "array"
+        }
+      },
+      "required": [
+        "closed",
+        "points"
+      ],
+      "title": "Ring",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "geometry_engine": {
+      "title": "Geometry Engine",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/GeometryProvenance"
+    },
+    "page_id": {
+      "title": "Page Id",
+      "type": "string"
+    },
+    "page_mm": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "exclusiveMinimum": 0,
+          "maximum": 1000,
+          "type": "number"
+        },
+        {
+          "exclusiveMinimum": 0,
+          "maximum": 1000,
+          "type": "number"
+        }
+      ],
+      "title": "Page Mm",
+      "type": "array"
+    },
+    "units": {
+      "const": "mm",
+      "title": "Units",
+      "type": "string"
+    },
+    "coordinate_space": {
+      "const": "sheet_design",
+      "title": "Coordinate Space",
+      "type": "string"
+    },
+    "origin": {
+      "const": "top_left",
+      "title": "Origin",
+      "type": "string"
+    },
+    "x_direction": {
+      "const": "right",
+      "title": "X Direction",
+      "type": "string"
+    },
+    "y_direction": {
+      "const": "down",
+      "title": "Y Direction",
+      "type": "string"
+    },
+    "geometry_stage": {
+      "const": "finished_cut_pre_device",
+      "title": "Geometry Stage",
+      "type": "string"
+    },
+    "shapes": {
+      "items": {
+        "$ref": "#/$defs/CutShape"
+      },
+      "title": "Shapes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "geometry_engine",
+    "provenance",
+    "page_id",
+    "page_mm",
+    "units",
+    "coordinate_space",
+    "origin",
+    "x_direction",
+    "y_direction",
+    "geometry_stage",
+    "shapes"
+  ],
+  "title": "CutGeometry",
+  "type": "object"
+}

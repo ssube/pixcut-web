@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pixcut-studio"
+version = "0.1.0"
+description = "Local-first PixCut sheet editor and durable simulator service"
+license = { file = "LICENSE" }
+requires-python = ">=3.12,<3.13"
+dependencies = ["fastapi", "uvicorn", "python-multipart", "pillow", "sqlalchemy", "alembic", "shapely", "numpy"]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+usb = ["pyusb==1.3.1"]
+
+[project.scripts]
+pixcut = "pixcut.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pixcut"]

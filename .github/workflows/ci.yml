@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.10.10"
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --python 3.12 --extra dev --extra usb --locked
+
+      - name: Build pinned SQLite runtime
+        run: .venv/bin/python scripts/build_sqlite.py
+
+      - name: Run backend tests
+        run: .venv/bin/pytest -q
+
+      - name: Check installer syntax
+        run: bash -n scripts/install-udev-rule.sh
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20.20.2"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install browser dependencies
+        run: npm --prefix web ci
+
+      - name: Run browser tests
+        run: npm --prefix web test
+
+      - name: Build browser app
+        run: npm --prefix web run build
+
+      - name: Verify generated contracts
+        run: |
+          .venv/bin/python scripts/generate_contracts.py
+          web/node_modules/.bin/openapi-typescript contracts/openapi.json -o web/src/api.generated.ts
+          git diff --exit-code -- contracts web/src/api.generated.ts

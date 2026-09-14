@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "geometry_engine": "pixcut-polygon-v2",
+  "provenance": {
+    "kind": "render",
+    "project_id": "fixture-project",
+    "project_revision": 1,
+    "render_id": "fixture-render"
+  },
+  "page_id": "page-0",
+  "page_mm": [
+    101.6,
+    177.8
+  ],
+  "units": "mm",
+  "coordinate_space": "sheet_design",
+  "origin": "top_left",
+  "x_direction": "right",
+  "y_direction": "down",
+  "geometry_stage": "finished_cut_pre_device",
+  "shapes": [
+    {
+      "id": "placement-0",
+      "sticker_id": "fixture-sticker",
+      "sticker_revision": 1,
+      "placement_id": "placement-0",
+      "outer": {
+        "closed": true,
+        "points": [
+          [
+            5.0,
+            5.0
+          ],
+          [
+            25.0,
+            5.0
+          ],
+          [
+            25.0,
+            35.0
+          ],
+          [
+            5.0,
+            35.0
+          ]
+        ]
+      },
+      "holes": [],
+      "cut_policy": {
+        "cut_padding_mm": 0.0,
+        "minimum_cut_width_mm": 0.0
+      }
+    }
+  ]
+}

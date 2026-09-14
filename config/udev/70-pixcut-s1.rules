@@ -1,0 +1,3 @@
+# Liene PixCut S1 (302c:3101)
+# Keep libusb access stable when the kernel assigns a new bus/device address.
+SUBSYSTEM=="usb", ATTR{idVendor}=="302c", ATTR{idProduct}=="3101", GROUP:="plugdev", MODE:="0660", TAG+="uaccess"
